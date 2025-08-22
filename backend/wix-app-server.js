@@ -459,6 +459,71 @@ app.post('/webhooks/product-changed', (req, res) => {
         res.status(500).json({ error: 'Erro interno' });
     }
 });
+app.post('/webhooks/product-updated', (req, res) => {
+    try {
+        const { siteId, productId, changes, payload } = req.body;
+        console.log(`🔧 Produto atualizado no site ${siteId}:`, { productId, changes, payload });
+
+        // Aqui você pode atualizar o cache de produtos ou buscar os dados atualizados
+
+        res.json({ success: true });
+    } catch (error) {
+        console.error('Erro no webhook de produto atualizado:', error);
+        res.status(500).json({ error: 'Erro interno' });
+    }
+});
+app.post('/webhooks/product-collection-deleted', (req, res) => {
+    try {
+        const { siteId, collectionId, payload } = req.body;
+        console.log(`🗑️ Coleção de produtos deletada no site ${siteId}:`, { collectionId, payload });
+
+        // Aqui você pode remover a coleção do cache ou atualizar os dados do site
+
+        res.json({ success: true });
+    } catch (error) {
+        console.error('Erro no webhook de coleção deletada:', error);
+        res.status(500).json({ error: 'Erro interno' });
+    }
+});
+app.post('/webhooks/product-collection-changed', (req, res) => {
+    try {
+        const { siteId, collectionId, changes, payload } = req.body;
+        console.log(`🔄 Coleção de produtos alterada no site ${siteId}:`, { collectionId, changes, payload });
+
+        // Aqui você pode atualizar o cache de categorias ou produtos do site
+
+        res.json({ success: true });
+    } catch (error) {
+        console.error('Erro no webhook de coleção alterada:', error);
+        res.status(500).json({ error: 'Erro interno' });
+    }
+});
+app.post('/webhooks/product-collection-created', (req, res) => {
+    try {
+        const { siteId, collectionId, payload } = req.body;
+        console.log(`🆕 Coleção de produtos criada no site ${siteId}:`, { collectionId, payload });
+
+        // Aqui você pode adicionar a nova coleção ao cache ou atualizar os dados do site
+
+        res.json({ success: true });
+    } catch (error) {
+        console.error('Erro no webhook de coleção criada:', error);
+        res.status(500).json({ error: 'Erro interno' });
+    }
+});
+app.post('/webhooks/product-deleted', (req, res) => {
+    try {
+        const { siteId, productId, payload } = req.body;
+        console.log(`🗑️ Produto deletado no site ${siteId}:`, { productId, payload });
+
+        // Aqui você pode remover o produto do cache ou atualizar os dados do site
+
+        res.json({ success: true });
+    } catch (error) {
+        console.error('Erro no webhook de produto deletado:', error);
+        res.status(500).json({ error: 'Erro interno' });
+    }
+});
 // ...existing code...
 
 // =============================================

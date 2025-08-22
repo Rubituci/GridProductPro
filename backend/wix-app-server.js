@@ -446,6 +446,19 @@ app.post('/webhooks/inventory-variants-changed', (req, res) => {
         res.status(500).json({ error: 'Erro interno' });
     }
 });
+app.post('/webhooks/product-changed', (req, res) => {
+    try {
+        const { siteId, productId, changes, payload } = req.body;
+        console.log(`✏️ Produto alterado no site ${siteId}:`, { productId, changes, payload });
+
+        // Aqui você pode atualizar o cache de produtos ou buscar os dados atualizados
+
+        res.json({ success: true });
+    } catch (error) {
+        console.error('Erro no webhook de produto alterado:', error);
+        res.status(500).json({ error: 'Erro interno' });
+    }
+});
 // ...existing code...
 
 // =============================================

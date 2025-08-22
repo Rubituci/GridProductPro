@@ -526,12 +526,12 @@ function getTopEvents(analytics) {
 
 // Servir widget principal
 app.get('/widget', (req, res) => {
-    res.sendFile(__dirname + '/widgets/smart-product-grid-wix.js');
+    res.sendFile(process.cwd() + '/smart-product-grid-wix.js');
 });
 
 app.get('/widget/mobile', (req, res) => {
     // Versão otimizada para mobile (pode ser a mesma por enquanto)
-    res.sendFile(__dirname + '/widgets/smart-product-grid-wix.js');
+    res.sendFile(process.cwd() + '/smart-product-grid-wix.js');
 });
 
 // Dashboard do app (para configurações)

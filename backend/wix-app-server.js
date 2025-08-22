@@ -598,9 +598,9 @@ app.get('/dashboard', (req, res) => {
 
 app.listen(PORT, () => {
     console.log(`🚀 Smart Product Grid Pro API rodando na porta ${PORT}`);
-    console.log(`🌐 Endpoint público: https://smart-grid-pro-app.herokuapp.com`);
-    console.log(`📱 Widget URL: https://smart-grid-pro-app.herokuapp.com/widget`);
-    console.log(`⚙️  Dashboard: https://smart-grid-pro-app.herokuapp.com/dashboard`);
+    console.log(`🌐 Endpoint público: https://web-production-4ca6.up.railway.app`);
+    console.log(`📱 Widget URL: https://web-production-4ca6.up.railway.app/widget`);
+    console.log(`⚙️  Dashboard: https://web-production-4ca6.up.railway.app/dashboard`);
 });
 
 module.exports = app;

@@ -1,0 +1,2 @@
+Railway restart trigger - Fixed homepage route
+Timestamp: 2025-08-22 - Added GET / route to show app information

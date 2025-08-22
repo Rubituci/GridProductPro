@@ -6,12 +6,16 @@
 const express = require('express');
 const cors = require('cors');
 const axios = require('axios');
+const compression = require('compression');
+const helmet = require('helmet');
 require('dotenv').config();
 
 const app = express();
 const PORT = process.env.PORT || 3000;
 
 // Middleware
+app.use(helmet()); // Segurança
+app.use(compression()); // Compressão GZIP
 app.use(cors({
     origin: '*',
     methods: ['GET', 'POST', 'PUT', 'DELETE', 'OPTIONS'],
@@ -20,6 +24,30 @@ app.use(cors({
 
 app.use(express.json({ limit: '10mb' }));
 app.use(express.static('public'));
+
+// Rota principal - Página de informações do app
+app.get('/', (req, res) => {
+    res.json({
+        name: "Smart Product Grid Pro",
+        version: "1.0.0",
+        description: "Wix App para grid inteligente de produtos com IA",
+        status: "active",
+        environment: process.env.NODE_ENV || 'development',
+        endpoints: {
+            health: '/health',
+            api: '/api/*',
+            widget: '/api/widget/config',
+            analytics: '/api/analytics/*'
+        },
+        features: {
+            multiTenant: true,
+            aiPowered: true,
+            analytics: true,
+            plans: ['free', 'pro', 'enterprise']
+        },
+        timestamp: new Date().toISOString()
+    });
+});
 
 // Database simulado para múltiplos sites
 const sitesData = new Map();

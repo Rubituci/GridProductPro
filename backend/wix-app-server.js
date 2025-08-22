@@ -414,6 +414,26 @@ app.post('/webhooks/subscription-changed', (req, res) => {
         res.status(500).json({ error: 'Erro interno' });
     }
 });
+// ...existing code...
+app.post('/webhooks/app-installed', (req, res) => { /* ... */ });
+app.post('/webhooks/app-uninstalled', (req, res) => { /* ... */ });
+app.post('/webhooks/subscription-changed', (req, res) => { /* ... */ });
+
+// Adicione aqui:
+app.post('/webhooks/product-created', (req, res) => {
+    try {
+        const { siteId, productId, payload } = req.body;
+        console.log(`🆕 Produto criado no site ${siteId}:`, { productId, payload });
+
+        // Aqui você pode atualizar o cache de produtos, buscar o novo produto, etc.
+
+        res.json({ success: true });
+    } catch (error) {
+        console.error('Erro no webhook de produto criado:', error);
+        res.status(500).json({ error: 'Erro interno' });
+    }
+});
+// ...existing code...
 
 // =============================================
 // FUNÇÕES AUXILIARES

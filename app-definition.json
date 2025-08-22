@@ -1,0 +1,120 @@
+{
+  "appDefinitionId": "smart-product-grid-pro-app",
+  "appName": "Smart Product Grid Pro",
+  "platformVersion": "1.479.0",
+  "namespace": "smart-grid-pro",
+  "category": "ecommerce", 
+  "subCategory": "store-enhancement",
+  "keywords": ["products", "grid", "ai", "recommendations", "store", "ecommerce"],
+  "privacyPolicyUrl": "https://smartgridpro.com/privacy",
+  "termsOfUseUrl": "https://smartgridpro.com/terms",
+  "supportUrl": "https://smartgridpro.com/support",
+  
+  "components": [
+    {
+      "componentType": "WIDGET",
+      "widgetId": "smart-product-grid",
+      "name": "Smart Product Grid", 
+      "default": true,
+      "componentUrl": "https://smart-grid-pro-app.herokuapp.com/widget",
+      "ssrCacheTTL": 60,
+      "mobileComponentUrl": "https://smart-grid-pro-app.herokuapp.com/widget/mobile"
+    }
+  ],
+
+  "extensions": [
+    {
+      "extensionType": "DASHBOARD_COMPONENT",
+      "componentName": "smart-grid-settings",
+      "title": "Smart Grid Settings",
+      "componentUrl": "https://smart-grid-pro-app.herokuapp.com/dashboard",
+      "permissions": ["MANAGE_STORES"]
+    }
+  ],
+
+  "permissions": [
+    {
+      "name": "Store.ReadCatalog",
+      "description": "Read store products and categories"
+    },
+    {
+      "name": "Store.ReadOrders", 
+      "description": "Read order data for analytics"
+    },
+    {
+      "name": "Analytics.Read",
+      "description": "Read site analytics for recommendations"
+    },
+    {
+      "name": "Billing.ChargeReadyPayments",
+      "description": "Process premium feature payments"
+    }
+  ],
+
+  "webhooks": [
+    {
+      "eventType": "STORE_CATALOG_CHANGED",
+      "callbackUrl": "https://smart-grid-pro-app.herokuapp.com/webhooks/catalog-changed"
+    },
+    {
+      "eventType": "STORE_ORDER_PAID", 
+      "callbackUrl": "https://smart-grid-pro-app.herokuapp.com/webhooks/order-paid"
+    }
+  ],
+
+  "appFields": [
+    {
+      "fieldKey": "apiKey",
+      "fieldType": "TEXT",
+      "displayName": "API Key (Opcional para recursos premium)",
+      "tooltip": "Sua chave API para recursos avançados de IA"
+    },
+    {
+      "fieldKey": "enableAnalytics",
+      "fieldType": "BOOLEAN", 
+      "displayName": "Ativar Analytics Avançados",
+      "defaultValue": "true"
+    },
+    {
+      "fieldKey": "aiProvider",
+      "fieldType": "DROPDOWN",
+      "displayName": "Provedor de IA",
+      "options": [
+        {"value": "openai", "label": "OpenAI"},
+        {"value": "google", "label": "Google AI"},
+        {"value": "local", "label": "Processamento Local"}
+      ],
+      "defaultValue": "local"
+    }
+  ],
+
+  "billingConfig": {
+    "freeTrialDays": 30,
+    "pricingPlans": [
+      {
+        "planId": "free",
+        "name": "Gratuito",
+        "price": 0,
+        "currency": "USD",
+        "period": "MONTHLY",
+        "features": ["Até 100 produtos", "Categorização básica", "Suporte email"]
+      },
+      {
+        "planId": "pro", 
+        "name": "Profissional",
+        "price": 9.99,
+        "currency": "USD", 
+        "period": "MONTHLY",
+        "features": ["Produtos ilimitados", "IA avançada", "Analytics completos", "Suporte prioritário"]
+      },
+      {
+        "planId": "enterprise",
+        "name": "Empresarial", 
+        "price": 29.99,
+        "currency": "USD",
+        "period": "MONTHLY", 
+        "features": ["Tudo do Pro", "API personalizada", "Integração white-label", "Suporte 24/7"]
+      }
+    ]
+  }
+}

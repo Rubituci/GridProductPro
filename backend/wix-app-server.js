@@ -351,10 +351,7 @@ app.get('/api/analytics/dashboard', (req, res) => {
 app.post('/webhooks/app-installed', (req, res) => {
     try {
         const { instanceId, siteId, permissions } = req.body;
-        
         console.log(`🎉 App instalado em ${siteId}`);
-        
-        // Inicializar dados do site
         sitesData.set(siteId, {
             settings: {
                 aiProvider: 'local',
@@ -367,9 +364,7 @@ app.post('/webhooks/app-installed', (req, res) => {
             installedAt: new Date().toISOString(),
             instanceId
         });
-        
         res.json({ success: true });
-        
     } catch (error) {
         console.error('Erro no webhook de instalação:', error);
         res.status(500).json({ error: 'Erro interno' });
@@ -379,15 +374,10 @@ app.post('/webhooks/app-installed', (req, res) => {
 app.post('/webhooks/app-uninstalled', (req, res) => {
     try {
         const { siteId } = req.body;
-        
         console.log(`😢 App desinstalado de ${siteId}`);
-        
-        // Remover dados do site (opcional - pode manter para reativação)
         sitesData.delete(siteId);
         analyticsData.delete(siteId);
-        
         res.json({ success: true });
-        
     } catch (error) {
         console.error('Erro no webhook de desinstalação:', error);
         res.status(500).json({ error: 'Erro interno' });
@@ -397,130 +387,106 @@ app.post('/webhooks/app-uninstalled', (req, res) => {
 app.post('/webhooks/subscription-changed', (req, res) => {
     try {
         const { siteId, planId, status } = req.body;
-        
         if (sitesData.has(siteId)) {
             const siteData = sitesData.get(siteId);
             siteData.settings.plan = planId;
             siteData.settings.subscriptionStatus = status;
             sitesData.set(siteId, siteData);
-            
             console.log(`💳 Plano alterado para ${planId} no site ${siteId}`);
         }
-        
         res.json({ success: true });
-        
     } catch (error) {
         console.error('Erro no webhook de assinatura:', error);
         res.status(500).json({ error: 'Erro interno' });
     }
 });
-// ...existing code...
-app.post('/webhooks/app-installed', (req, res) => { /* ... */ });
-app.post('/webhooks/app-uninstalled', (req, res) => { /* ... */ });
-app.post('/webhooks/subscription-changed', (req, res) => { /* ... */ });
 
-// Adicione aqui:
+// --- WEBHOOKS DE PRODUTOS E COLEÇÕES ---
 app.post('/webhooks/product-created', (req, res) => {
     try {
         const { siteId, productId, payload } = req.body;
         console.log(`🆕 Produto criado no site ${siteId}:`, { productId, payload });
-
-        // Aqui você pode atualizar o cache de produtos, buscar o novo produto, etc.
-
         res.json({ success: true });
     } catch (error) {
         console.error('Erro no webhook de produto criado:', error);
         res.status(500).json({ error: 'Erro interno' });
     }
 });
-app.post('/webhooks/inventory-variants-changed', (req, res) => {
-    try {
-        const { siteId, productId, variants, payload } = req.body;
-        console.log(`🔄 Variantes de inventário alteradas no site ${siteId}:`, { productId, variants, payload });
 
-        // Aqui você pode atualizar o cache de variantes ou estoque do produto
-
-        res.json({ success: true });
-    } catch (error) {
-        console.error('Erro no webhook de variantes de inventário:', error);
-        res.status(500).json({ error: 'Erro interno' });
-    }
-});
-app.post('/webhooks/product-changed', (req, res) => {
-    try {
-        const { siteId, productId, changes, payload } = req.body;
-        console.log(`✏️ Produto alterado no site ${siteId}:`, { productId, changes, payload });
-
-        // Aqui você pode atualizar o cache de produtos ou buscar os dados atualizados
-
-        res.json({ success: true });
-    } catch (error) {
-        console.error('Erro no webhook de produto alterado:', error);
-        res.status(500).json({ error: 'Erro interno' });
-    }
-});
 app.post('/webhooks/product-updated', (req, res) => {
     try {
         const { siteId, productId, changes, payload } = req.body;
         console.log(`🔧 Produto atualizado no site ${siteId}:`, { productId, changes, payload });
-
-        // Aqui você pode atualizar o cache de produtos ou buscar os dados atualizados
-
         res.json({ success: true });
     } catch (error) {
         console.error('Erro no webhook de produto atualizado:', error);
         res.status(500).json({ error: 'Erro interno' });
     }
 });
-app.post('/webhooks/product-collection-deleted', (req, res) => {
+
+app.post('/webhooks/product-changed', (req, res) => {
     try {
-        const { siteId, collectionId, payload } = req.body;
-        console.log(`🗑️ Coleção de produtos deletada no site ${siteId}:`, { collectionId, payload });
-
-        // Aqui você pode remover a coleção do cache ou atualizar os dados do site
-
+        const { siteId, productId, changes, payload } = req.body;
+        console.log(`✏️ Produto alterado no site ${siteId}:`, { productId, changes, payload });
         res.json({ success: true });
     } catch (error) {
-        console.error('Erro no webhook de coleção deletada:', error);
+        console.error('Erro no webhook de produto alterado:', error);
         res.status(500).json({ error: 'Erro interno' });
     }
 });
-app.post('/webhooks/product-collection-changed', (req, res) => {
+
+app.post('/webhooks/product-deleted', (req, res) => {
     try {
-        const { siteId, collectionId, changes, payload } = req.body;
-        console.log(`🔄 Coleção de produtos alterada no site ${siteId}:`, { collectionId, changes, payload });
-
-        // Aqui você pode atualizar o cache de categorias ou produtos do site
-
+        const { siteId, productId, payload } = req.body;
+        console.log(`🗑️ Produto deletado no site ${siteId}:`, { productId, payload });
         res.json({ success: true });
     } catch (error) {
-        console.error('Erro no webhook de coleção alterada:', error);
+        console.error('Erro no webhook de produto deletado:', error);
         res.status(500).json({ error: 'Erro interno' });
     }
 });
+
 app.post('/webhooks/product-collection-created', (req, res) => {
     try {
         const { siteId, collectionId, payload } = req.body;
         console.log(`🆕 Coleção de produtos criada no site ${siteId}:`, { collectionId, payload });
-
-        // Aqui você pode adicionar a nova coleção ao cache ou atualizar os dados do site
-
         res.json({ success: true });
     } catch (error) {
         console.error('Erro no webhook de coleção criada:', error);
         res.status(500).json({ error: 'Erro interno' });
     }
 });
-app.post('/webhooks/product-deleted', (req, res) => {
+
+app.post('/webhooks/product-collection-changed', (req, res) => {
     try {
-        const { siteId, productId, payload } = req.body;
-        console.log(`🗑️ Produto deletado no site ${siteId}:`, { productId, payload });
-
-        // Aqui você pode remover o produto do cache ou atualizar os dados do site
-
+        const { siteId, collectionId, changes, payload } = req.body;
+        console.log(`🔄 Coleção de produtos alterada no site ${siteId}:`, { collectionId, changes, payload });
         res.json({ success: true });
     } catch (error) {
-        console.error('Erro no webhook de produto deletado:', error);
+        console.error('Erro no webhook de coleção alterada:', error);
+        res.status(500).json({ error: 'Erro interno' });
+    }
+});
+
+app.post('/webhooks/product-collection-deleted', (req, res) => {
+    try {
+        const { siteId, collectionId, payload } = req.body;
+        console.log(`🗑️ Coleção de produtos deletada no site ${siteId}:`, { collectionId, payload });
+        res.json({ success: true });
+    } catch (error) {
+        console.error('Erro no webhook de coleção deletada:', error);
+        res.status(500).json({ error: 'Erro interno' });
+    }
+});
+
+// --- WEBHOOKS DE VARIANTES E INVENTÁRIO ---
+app.post('/webhooks/inventory-variants-changed', (req, res) => {
+    try {
+        const { siteId, productId, variants, payload } = req.body;
+        console.log(`🔄 Variantes de inventário alteradas no site ${siteId}:`, { productId, variants, payload });
+        res.json({ success: true });
+    } catch (error) {
+        console.error('Erro no webhook de variantes de inventário:', error);
         res.status(500).json({ error: 'Erro interno' });
     }
 });

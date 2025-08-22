@@ -490,6 +490,13 @@ app.post('/webhooks/inventory-variants-changed', (req, res) => {
         res.status(500).json({ error: 'Erro interno' });
     }
 });
+app.get('/api/categories', (req, res) => {
+  // Retorne um array de categorias
+  res.json([
+    { id: 'cat1', name: 'Categoria 1' },
+    { id: 'cat2', name: 'Categoria 2' }
+  ]);
+});
 // ...existing code...
 
 // =============================================
